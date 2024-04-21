@@ -1,0 +1,4 @@
+spring.application.name: demo-tika-ocr
+
+tesseract:
+  tessdata-path: C:/Program Files/Tesseract-OCR/tessdata/

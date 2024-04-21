@@ -1,0 +1,40 @@
+{
+  "nric": {
+    "standardWidth": 900,
+    "standardHeight": 557,
+    "fields": [
+      {"name": "id", "x": 344, "y": 69, "width": 272, "height": 50, "type": "text"},
+      {"name": "image", "x": 38, "y": 132, "width": 264, "height": 285, "type": "image"},
+      {"name": "name", "x": 300, "y": 178, "width": 501, "height": 86, "type": "text"},
+      {"name": "race", "x": 300, "y": 362, "width": 306, "height": 41, "type": "text"},
+      {"name": "dob", "x": 300, "y": 425, "width": 179, "height": 33, "type": "text"},
+      {"name": "sex", "x": 494, "y": 392, "width": 125, "height": 88, "type": "text"},
+      {"name": "cob", "x": 300, "y": 488, "width": 501, "height": 41, "type": "text"}
+    ]
+  },
+  "fin": {
+    "standardWidth": 900,
+    "standardHeight": 557,
+    "fields": [
+      {"name": "id", "x": 344, "y": 69, "width": 272, "height": 50, "type": "text"},
+      {"name": "image", "x": 38, "y": 132, "width": 264, "height": 285, "type": "image"},
+      {"name": "name", "x": 300, "y": 178, "width": 501, "height": 86, "type": "text"},
+      {"name": "race", "x": 300, "y": 362, "width": 306, "height": 41, "type": "text"},
+      {"name": "dob", "x": 300, "y": 425, "width": 179, "height": 33, "type": "text"},
+      {"name": "sex", "x": 494, "y": 392, "width": 125, "height": 88, "type": "text"},
+      {"name": "cob", "x": 300, "y": 488, "width": 501, "height": 41, "type": "text"}
+    ]
+  },
+  "passport": {
+    "standardWidth": 900,
+    "standardHeight": 557,
+    "fields": [
+      {"name": "id", "x": 344, "y": 69, "width": 272, "height": 50},
+      {"name": "name", "x": 300, "y": 178, "width": 501, "height": 86},
+      {"name": "race", "x": 300, "y": 362, "width": 306, "height": 41},
+      {"name": "dob", "x": 300, "y": 425, "width": 179, "height": 33},
+      {"name": "sex", "x": 494, "y": 392, "width": 125, "height": 88},
+      {"name": "cob", "x": 300, "y": 488, "width": 501, "height": 41}
+    ]
+  }
+}
