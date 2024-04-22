@@ -36,8 +36,9 @@ public class CommonBeans {
     public BoundingConfig boundingConfig() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Resource resource = resourceLoader.getResource("classpath:bounding-config.json");
-        Map<String, BoundingConfig.DocumentType> documentTypeMap = mapper.readValue(resource.getInputStream(), new TypeReference<Map<String, BoundingConfig.DocumentType>>() {
-        });
+        Map<String, BoundingConfig.DocumentType> documentTypeMap =
+                mapper.readValue(resource.getInputStream(), new TypeReference<>() {
+                });
         BoundingConfig boundingConfig = new BoundingConfig();
         boundingConfig.setDocumentTypes(documentTypeMap);
         return boundingConfig;

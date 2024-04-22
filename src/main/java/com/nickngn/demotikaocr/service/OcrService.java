@@ -69,7 +69,7 @@ public class OcrService {
         String imageString = null;
 
         try (
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream()
         ) {
             ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();

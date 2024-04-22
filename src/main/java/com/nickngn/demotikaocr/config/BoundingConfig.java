@@ -27,8 +27,8 @@ public class BoundingConfig {
         public DocumentType calcScaledConfig(int width, int height) {
             DocumentType scaledConfig = new DocumentType();
             scaledConfig.setFields((ArrayList<Field>) fields.clone());
-            double scaledX = standardWidth / width;
-            double scaledY = standardHeight / height;
+            double scaledX = (double) standardWidth / width;
+            double scaledY = (double) standardHeight / height;
             for (Field field : scaledConfig.fields) {
                 field.x = (int)(scaledX * field.x);
                 field.y = (int)(scaledY * field.y);
