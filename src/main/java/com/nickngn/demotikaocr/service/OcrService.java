@@ -1,10 +1,10 @@
 package com.nickngn.demotikaocr.service;
 
 import com.nickngn.demotikaocr.config.BoundingConfig;
-import com.nickngn.demotikaocr.model.NRIC;
 import com.recognition.software.jdeskew.ImageDeskew;
 import com.recognition.software.jdeskew.ImageUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.TesseractException;
 import net.sourceforge.tess4j.util.ImageHelper;
@@ -12,19 +12,21 @@ import net.sourceforge.tess4j.util.LoadLibs;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OcrService {
+
+    public static final String PNG = "png";
 
     static {
         File tmpFolder = LoadLibs.extractTessResources("win32-x86-64");
@@ -34,46 +36,28 @@ public class OcrService {
     private final ITesseract tesseract;
     private final BoundingConfig boundingConfig;
 
-    public NRIC detectFin(BufferedImage bufferedImage) throws TesseractException {
+    public Map<String, String> doOcr(BufferedImage bufferedImage, String docType) throws TesseractException {
+        Map<String, String> result = new HashMap<>();
+
         bufferedImage = preprocess(bufferedImage);
-        BoundingConfig.DocumentType config = boundingConfig.getFin();
-        config = config.calcScaledConfig(bufferedImage.getWidth(), bufferedImage.getHeight());
+        BoundingConfig.DocumentType docTypeConf = boundingConfig.getDocumentTypes().get(docType);
+        docTypeConf = docTypeConf.calcScaledConfig(bufferedImage.getWidth(), bufferedImage.getHeight());
 
-        String id = tesseract.doOCR(bufferedImage, "", List.of(config.roi("id")));
-        BoundingConfig.Field imageField = config.getField("image");
-        BufferedImage image = bufferedImage.getSubimage(imageField.getX(), imageField.getY(), imageField.getWidth(), imageField.getHeight());
-        String encodedImage = encodeToString(image, "png");
-        String name = tesseract.doOCR(bufferedImage, "", List.of(config.roi("name")));
-        String race = tesseract.doOCR(bufferedImage, "", List.of(config.roi("race")));
-        String dob = tesseract.doOCR(bufferedImage, "", List.of(config.roi("dob")));
-        String sex = tesseract.doOCR(bufferedImage, "", List.of(config.roi("sex")));
-        String cob = tesseract.doOCR(bufferedImage, "", List.of(config.roi("cob")));
-
-        sex = sex.trim();
-        sex = sex.substring(sex.length() - 2);
-
-        return new  NRIC(id.trim(), encodedImage, name.trim(), race.trim(), dob.trim(), sex.trim(), cob.trim());
+        for (var f : docTypeConf.getFields()) {
+            String val = "";
+            if (f.getType().equals(BoundingConfig.FieldType.TEXT)) {
+                val = doOcr(bufferedImage, docTypeConf, f.getName());
+            } else if (f.getType().equals(BoundingConfig.FieldType.IMAGE)) {
+                BufferedImage image = bufferedImage.getSubimage(f.getX(), f.getY(), f.getWidth(), f.getHeight());
+                val = encodeBase64(image, PNG);
+            }
+            result.put(f.getName(), val.trim());
+        }
+        return result;
     }
 
-    public NRIC detectNric(BufferedImage bufferedImage) throws TesseractException {
-        bufferedImage = preprocess(bufferedImage);
-        BoundingConfig.DocumentType config = boundingConfig.getNric();
-        config = config.calcScaledConfig(bufferedImage.getWidth(), bufferedImage.getHeight());
-
-        String id = tesseract.doOCR(bufferedImage, "", List.of(config.roi("id")));
-        BoundingConfig.Field imageField = config.getField("image");
-        BufferedImage image = bufferedImage.getSubimage(imageField.getX(), imageField.getY(), imageField.getWidth(), imageField.getHeight());
-        String encodedImage = encodeToString(image, "png");
-        String name = tesseract.doOCR(bufferedImage, "", List.of(config.roi("name")));
-        String race = tesseract.doOCR(bufferedImage, "", List.of(config.roi("race")));
-        String dob = tesseract.doOCR(bufferedImage, "", List.of(config.roi("dob")));
-        String sex = tesseract.doOCR(bufferedImage, "", List.of(config.roi("sex")));
-        String cob = tesseract.doOCR(bufferedImage, "", List.of(config.roi("cob")));
-
-        sex = sex.trim();
-        sex = sex.substring(sex.length() - 2);
-
-        return new  NRIC(id.trim(), encodedImage, name.trim(), race.trim(), dob.trim(), sex.trim(), cob.trim());
+    private String doOcr(BufferedImage bufferedImage, BoundingConfig.DocumentType documentType, String name) throws TesseractException {
+        return tesseract.doOCR(bufferedImage, "", List.of(documentType.roi(name)));
     }
 
     private BufferedImage preprocess(BufferedImage bufferedImage) {
@@ -81,20 +65,18 @@ public class OcrService {
         return deskewImage(bufferedImage);
     }
 
-    public String encodeToString(BufferedImage image, String type) {
+    public String encodeBase64(BufferedImage image, String type) {
         String imageString = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        try {
+        try (
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ) {
             ImageIO.write(image, type, bos);
             byte[] imageBytes = bos.toByteArray();
-
             Base64.Encoder encoder = Base64.getEncoder();
             imageString = encoder.encodeToString(imageBytes);
-
-            bos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error occurred while encoding image", e);
         }
         return "data:image/" + type + ";base64," + imageString;
     }

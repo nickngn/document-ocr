@@ -1,5 +1,6 @@
 package com.nickngn.demotikaocr.config;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,15 +8,15 @@ import lombok.Setter;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
 public class BoundingConfig {
 
-    private DocumentType nric;
-    private DocumentType fin;
-    private DocumentType passport;
+    private Map<String, DocumentType> documentTypes = new HashMap<>();
 
     @Getter @Setter
     public static class DocumentType {
@@ -56,7 +57,20 @@ public class BoundingConfig {
         private int y;
         private int width;
         private int height;
-        private String type;  // Optional, can be null for passport fields
+        private FieldType type;  // Optional, can be null for passport fields
+    }
+
+    @Getter
+    public enum FieldType {
+        TEXT("text"),
+        IMAGE("image");
+
+        @JsonValue
+        private final String type;
+
+        FieldType(String type) {
+            this.type = type;
+        }
     }
 
 

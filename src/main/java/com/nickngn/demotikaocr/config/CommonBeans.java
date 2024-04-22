@@ -1,5 +1,6 @@
 package com.nickngn.demotikaocr.config;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import net.sourceforge.tess4j.ITesseract;
@@ -11,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Configuration
@@ -34,6 +36,10 @@ public class CommonBeans {
     public BoundingConfig boundingConfig() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Resource resource = resourceLoader.getResource("classpath:bounding-config.json");
-        return mapper.readValue(resource.getInputStream(), BoundingConfig.class);
+        Map<String, BoundingConfig.DocumentType> documentTypeMap = mapper.readValue(resource.getInputStream(), new TypeReference<Map<String, BoundingConfig.DocumentType>>() {
+        });
+        BoundingConfig boundingConfig = new BoundingConfig();
+        boundingConfig.setDocumentTypes(documentTypeMap);
+        return boundingConfig;
     }
 }
