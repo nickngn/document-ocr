@@ -16,16 +16,16 @@ import java.util.Map;
 @Getter @Setter
 public class BoundingConfig {
 
-    private Map<String, DocumentType> documentTypes = new HashMap<>();
+    private Map<String, Document> documents = new HashMap<>();
 
     @Getter @Setter
-    public static class DocumentType {
+    public static class Document {
         private int standardWidth;
         private int standardHeight;
         private ArrayList<Field> fields;
 
-        public DocumentType calcScaledConfig(int width, int height) {
-            DocumentType scaledConfig = new DocumentType();
+        public Document calcScaledConfig(int width, int height) {
+            Document scaledConfig = new Document();
             scaledConfig.setFields((ArrayList<Field>) fields.clone());
             double scaledX = (double) standardWidth / width;
             double scaledY = (double) standardHeight / height;

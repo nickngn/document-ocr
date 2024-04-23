@@ -20,12 +20,12 @@ public class OcrController {
 
     private final OcrService ocrService;
 
-    @PostMapping("/{docType}")
+    @PostMapping({"", "/", "/{docType}"})
     public ResponseEntity<Map<String, String>> ocr(@RequestParam MultipartFile file,
-                                                   @PathVariable("docType") String docType) throws TesseractException, IOException {
+                                                   @PathVariable(value = "docType", required = false) String docType) throws TesseractException, IOException {
         @Cleanup
         InputStream inputStream = file.getInputStream();
-        Map<String, String> result = ocrService.doOcr(ImageIO.read(inputStream), docType);
+        Map<String, String> result = ocrService.readText(ImageIO.read(inputStream), docType);
         return ResponseEntity.ok(result);
     }
 }
