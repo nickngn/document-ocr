@@ -1,13 +1,13 @@
-package com.nickngn.demotikaocr;
+package com.nickngn.ocr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoTikaOcrApplication {
+public class OcrApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoTikaOcrApplication.class, args);
+        SpringApplication.run(OcrApplication.class, args);
     }
 
 }

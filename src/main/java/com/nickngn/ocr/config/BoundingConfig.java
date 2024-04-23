@@ -1,4 +1,4 @@
-package com.nickngn.demotikaocr.config;
+package com.nickngn.ocr.config;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;

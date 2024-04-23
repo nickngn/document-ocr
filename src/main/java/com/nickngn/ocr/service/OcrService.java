@@ -1,7 +1,7 @@
-package com.nickngn.demotikaocr.service;
+package com.nickngn.ocr.service;
 
-import com.nickngn.demotikaocr.config.BoundingConfig;
-import com.nickngn.demotikaocr.config.BoundingConfig.FieldType;
+import com.nickngn.ocr.config.BoundingConfig;
+import com.nickngn.ocr.config.BoundingConfig.FieldType;
 import com.recognition.software.jdeskew.ImageDeskew;
 import com.recognition.software.jdeskew.ImageUtil;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,10 @@
-package com.nickngn.demotikaocr;
+package com.nickngn.ocr;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoTikaOcrApplicationTests {
+class OcrApplicationTests {
 
     @Test
     void contextLoads() {

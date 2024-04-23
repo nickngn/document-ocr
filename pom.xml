@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nickngn</groupId>
-    <artifactId>demo-tika-ocr</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>demo-tika-ocr</name>
-    <description>demo-tika-ocr</description>
+    <artifactId>ocr</artifactId>
+    <version>1.0.0</version>
+    <name>ocr</name>
+    <description>Spring Boot + Tesseract to do OCR for documents (best for cards)</description>
     <properties>
         <java.version>21</java.version>
     </properties>

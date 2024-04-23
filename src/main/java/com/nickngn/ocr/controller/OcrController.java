@@ -1,6 +1,6 @@
-package com.nickngn.demotikaocr.controller;
+package com.nickngn.ocr.controller;
 
-import com.nickngn.demotikaocr.service.OcrService;
+import com.nickngn.ocr.service.OcrService;
 import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
 import net.sourceforge.tess4j.TesseractException;
